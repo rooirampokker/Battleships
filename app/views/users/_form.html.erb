@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Enter your details to start a new game</div>
+                <div class="panel-body">
+                    <%= bootstrap_form_tag url: '/register' do |f| %>
+<!-- Nsme -->  
+                        <div class="form-group">
+                            <%= f.label :userName, 'Name:', label_class: 'col-md-4 control-label' %>
+                            <%= f.text_field :userName, hide_label: true, class: 'form-control col-md-4', placeholder: 'Your Name' %>
+                        </div>
+<!-- Email -->
+                        <div class="form-group">
+                          <%= f.label :emailAddress, 'Email Address:', label_class: 'col-md-4 control-label' %>
+                          <%= f.email_field :emailAddress, hide_label: true, class: 'form-control col-md-4', placeholder: 'Email Address' %>
+                        </div>          
+<!-- Submit -->
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="glyphicon glyphicon-log-in"></i> Submit
+                                </button>
+                            </div>
+                        </div>
+                  
+                   <% end %> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
