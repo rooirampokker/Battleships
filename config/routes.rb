@@ -3,8 +3,11 @@ Rails.application.routes.draw do
   root 'users#index'
 
   resources :users
+  get '/login' => 'users#index'
   get '/register' => 'users#register'    
-  post '/register' => 'users#register'    
+  post '/register' => 'users#register'   
+  get '/play' => 'battleships#index'
+
 
   
   # The priority is based upon order of creation: first created -> highest priority.
