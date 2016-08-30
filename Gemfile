@@ -24,7 +24,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Active Resource (ARes) connects business objects and Representational State Transfer (REST) web services.
-gem 'activeresource'
+gem 'httparty'
 # Embed the V8 Javascript Interpreter into Ruby
 gem "therubyracer"
 # Wholesome Twitter Bootstrap fun for rails :-)
