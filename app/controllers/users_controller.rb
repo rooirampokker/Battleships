@@ -15,7 +15,11 @@ class UsersController < ApplicationController
       	@sessionDetails = BattleshipsAPI.register(@userName, @emailAddress)
         if @sessionDetailsID.is_a?(Object)
           session[:gameID] = @sessionDetails["id"]
-          redirect_to '/play' 
+          session[:incomingX] = @sessionDetails["x"];
+          session[:incomingY] = @sessionDetails["y"];
+          @incomingX = @sessionDetails["x"];
+          @incomingY = @sessionDetails["y"];
+          redirect_to '/play', incomingX: @incomingX, incomingY: @incomingY 
         end        
         rescue SocketError => errorMsg
           flash[:error] = "Error communicating with #{BattleshipsAPI.base_uri}. Please check your connection and try again"

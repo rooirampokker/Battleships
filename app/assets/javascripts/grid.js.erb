@@ -1,0 +1,75 @@
+
+	function generateTable(tableID, incomingX, incomingY, gridType) {
+		var table = $("<div>").addClass('gridContainer table '+gridType);
+		for (x=0; x<10; x++) {
+			var row = $("<div>").addClass('row');
+			for (y=0; y<10; y++) {
+				var hitClass = "";
+				if (x === incomingX && y === incomingY) {
+					hitClass = "hit";
+				} else hitClass = "snapable";
+				if (gridType == 'playGrid') {
+					var col = $("<div>").addClass('col snapable '+hitClass).text(x+","+y).attr('id', x+"-"+y).bind('click', function (event) {fireSalvo(event,this)});
+				} else var col = $("<div>").addClass('col snapable '+hitClass).text(x+","+y).attr('id', x+"-"+y);
+				row.append(col);	
+			}
+			table.append(row);
+		}
+		$(tableID).html(table);	
+	}
+/*
+*
+* THE SHIPYARD
+*
+*/	
+
+/*
+*
+*	launches a ship into the dryDock
+*
+*/
+	function launchShip(shipName = 'carrier_5x1', ship) {
+		if (ship == undefined) {
+			ship = $(".ship");
+		}
+
+		$(ship).append("<img class='carrierShip' src='/assets/"+shipName+".png'>").draggable({
+			containment: '#playerTable',
+			snap: '.snapable',
+			stop: function (event) {buildShip(event)}
+		}).bind('dblclick', function (event) {rotateShip(this, event)});
+	}
+/*
+*
+* rotates the ship 90degrees
+*
+*/
+	function rotateShip(that, event)	 {
+		event.stopPropagation();
+		$(that).toggleClass('rotated');
+	}
+
+/*
+*
+* starts building a new ship whenever an existing ship is dropped into the ocean
+*
+*/
+	function  buildShip() {
+		shipList = ['carrier_5x1', 'battleship_4x1', 'destroyer_3x1', 'submarine_2x1', 'submarine_2x1', 'patrolboat_1x1', 'patrolboat_1x1'];
+		var totalShips = $("#dryDock > .ship").length;
+		if (totalShips < 8) {
+			var newShip = $("<div>").addClass("ship");
+			newShip.appendTo("#dryDock");
+			launchShip(shipList[totalShips-1], newShip);
+		}
+	}
+/*
+*
+* fires the guns & sends coordinates off to the server
+*
+*/
+	function fireSalvo (event,that) {
+		event.stopPropagation();
+		alert("firing at: "+that.id);
+	}
+

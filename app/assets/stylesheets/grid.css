@@ -8,6 +8,15 @@ p {
 
 .float {
 	display: inline-block;
+	clear: both;
+}
+
+#playGrids, #playerTable, #enemyTable {
+	height: 400px;
+}
+
+#playerTable {
+	border: 1px solid black;
 }
 
 .table {
@@ -22,15 +31,51 @@ p {
 	display: block;
 	margin: 0;
 	height: 40px;
-
 }
 .col {
 	display: inline-block;
-	border: 1px solid black;
+	border: 1px dashed #9bc2cf;
 	padding: 2px;
 	background-color:blue;
 	height: 40px;
 	width: 40px;
+	background-image: url("water.jpg");
+}
 
 
+.hit {
+	background-color: red;
+	background-image: url("");
+}
+
+#dryDock {
+width: 1px;
+}
+.ship {
+ width: 100%;
+ height: 100%;
+}
+
+.rotated {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);	
+}
+
+.placeGrid {
+	z-index: -1;
+}
+
+.playGrid, .playGrid.col {
+	z-index: 2;
+	background: #000000;
+	position: relative;
+	opacity: 0.5;
+}
+
+img {
+	z-index: 1;
+	position: relative;
 }

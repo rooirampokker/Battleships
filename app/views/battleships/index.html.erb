@@ -1,13 +1,33 @@
 <%= javascript_include_tag "grid" %>
 
 <p id="notice"><%= notice %></p>
-<h2>Enemy Waters</h2>
-<p id="enemyTable" class="float">
-	
-</p>
+<section id="playGrids">
+	<div id="enemyTable" class="float"></div>
+	<div id="playerTable" class="float"></div>
+</section>
 
-<p id="playerTable" class="float">
-	
-</p>
+<div id="dryDock"><div class="ship"></div></div>
+
+<div class="form-group">
+    <div class="col-md-6 col-md-offset-4">
+        <button type="button" class="btn btn-primary " id="startButton">
+            <i class="glyphicon glyphicon-log-in"></i> Start
+        </button>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+$(function ()  {
+	generateTable('#enemyTable', -1, -1, 'placeGrid');
+	generateTable('#playerTable', 'placeGrid');
+	$("#startButton").bind('click', function(event) {
+		event.stopPropagation(); 
+		generateTable('#playerTable', <%= "#{session[:incomingX]}, #{session[:incomingY]}" %>, 'playGrid');
+	});
+	//launches the first ship
+	buildShip();
+});
+</script>
 
 
