@@ -2,7 +2,9 @@ class UsersController < ApplicationController
   
   # GET /users/new
   def index
-  
+    if session.has_key?(:gameID)
+      redirect_to '/play' 
+    end
   end
 
 # registers user with the API and draws the grid
