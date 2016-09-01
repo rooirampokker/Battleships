@@ -13,17 +13,17 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                <li><a class= "glyphicon glyphicon-home navbar-brand" href="#"> Battleships!</a></li>
+                <li><a class= "glyphicon glyphicon-home navbar-brand" href="/"> Battleships!</a></li>
             </ul>
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
-              <!--   Display the login button if we don't have a valid session token.... 
-                    <li><a class="glyphicon glyphicon-log-in" href="#"> Login</a></li>
-              <!-- else 
-                    <li><a class="glyphicon glyphicon-log-out" href="#"> Logout</a></li>
-                -->
+              <!--   Display the login button if we don't have a valid session token.... -->
+
+              <% if session.has_key?(:gameID) %>
+                    <li><a class="glyphicon glyphicon-log-out" href="/logout"> Logout</a></li>                    
+            <% end %>
             </ul>
         </div>
     </div>

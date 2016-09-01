@@ -7,15 +7,15 @@
                     <%= bootstrap_form_tag url: '/register' do |f| %>
 <!-- Nsme -->  
                         <div class="form-group">
-                            <%= f.label :userName, 'Name:', label_class: 'col-md-4 control-label' %>
-                            <%= f.text_field :userName, hide_label: true, class: 'form-control col-md-4', placeholder: 'Your Name' %>
+                            <%= f.label :userName, 'Name:', label_class: 'col-md-4 control-label required' %>
+                            <%= f.text_field :userName, hide_label: true, class: 'form-control col-md-4', placeholder: 'Your Name', required: 'required'%>
                         </div>
 <!-- Email -->
                         <div class="form-group">
                           <%= f.label :emailAddress, 'Email Address:', label_class: 'col-md-4 control-label' %>
-                          <%= f.email_field :emailAddress, hide_label: true, class: 'form-control col-md-4', placeholder: 'Email Address' %>
-                        </div>          
-<!-- Submit -->
+                          <%= f.email_field :emailAddress, hide_label: true, class: 'form-control col-md-4', placeholder: 'Email Address', required: 'required'%>
+                        </div>
+                    <!-- Submit -->
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

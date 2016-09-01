@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :users
   get '/login' => 'users#index'
+  get '/logout' => 'users#logout'
   get '/register' => 'users#register'    
   post '/register' => 'users#register'   
   get '/play' => 'battleships#index'

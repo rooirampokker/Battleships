@@ -13,7 +13,6 @@ class BattleshipsAPI
 							'Content-Type' => 'application/json' 
 							}
 					}
-		@sessionDetails = self.post('/register', @options)
-		
+		@sessionDetails = self.post('/register', @options)		
 	end 
 end

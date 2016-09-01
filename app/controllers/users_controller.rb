@@ -2,24 +2,27 @@ class UsersController < ApplicationController
   
   # GET /users/new
   def index
-    
+  
   end
 
 # registers user with the API and draws the grid
   def register
-   	#session[:userName] = params[:userName]
-   	#session[:emailAddress] = params[:emailAddress]
-   	if params.has_key?(:userName) && params.has_key?(:emailAddress)
 	   	@userName = params[:userName]
 	   	@emailAddress = params[:emailAddress]
-   	
-   		@options = BattleshipsAPI.register(@userName, @emailAddress)
-   		session[:gameID] = @options['id']
-   		@grid = @options
-   		redirect_to '/play'    
-   	else 
-   		redirect_to '/'
-   	end
-   	
-  end 
+      begin
+      	@sessionDetails = BattleshipsAPI.register(@userName, @emailAddress)
+        if @sessionDetailsID.is_a?(Object)
+          session[:gameID] = @sessionDetails["id"]
+          redirect_to '/play' 
+        end        
+        rescue SocketError => errorMsg
+          flash[:error] = "Error communicating with #{BattleshipsAPI.base_uri}. Please check your connection and try again"
+          redirect_to root_url        
+      end
+  end
+
+  def logout 
+    session[:gameID] = nil
+    redirect_to root_url 
+  end
 end
