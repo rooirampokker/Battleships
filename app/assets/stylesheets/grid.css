@@ -1,0 +1,36 @@
+.container {
+	clear: both;
+}
+
+p {
+	clear: both;
+}
+
+.float {
+	display: inline-block;
+}
+
+.table {
+	width: 400px;
+	height: 300px;
+	padding: 0;
+	margin: 0;
+	white-space: nowrap;
+	color: #ffffff;
+}
+.row {
+	display: block;
+	margin: 0;
+	height: 40px;
+
+}
+.col {
+	display: inline-block;
+	border: 1px solid black;
+	padding: 2px;
+	background-color:blue;
+	height: 40px;
+	width: 40px;
+
+
+}
