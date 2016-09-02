@@ -1,81 +1,85 @@
-.container {
-	clear: both;
-}
-
 p {
 	clear: both;
 }
 
+#title {
+	font-size: 16px;
+	display: inline-block;
+	position: relative;
+	top: 0;
+}
+.container {
+	width: 100%;
+}
 .float {
 	display: inline-block;
-	clear: both;
+
 }
 
-#playGrids, #playerTable, #enemyTable {
-	height: 400px;
-}
-
-#playerTable {
-	border: 1px solid black;
-}
-
-.table {
-	width: 400px;
-	height: 300px;
+#playGrids {
+	width: 100%;
+	color: #000000;
 	padding: 0;
 	margin: 0;
-	white-space: nowrap;
-	color: #ffffff;
+	display: inline-block;
 }
-.row {
-	display: block;
-	margin: 0;
-	height: 40px;
+
+#playerTable, #enemyTable {
+	height: 400px;
+	width: 400px;	
+	margin: 10px;
 }
+
 .col {
+	height: 40px;
+	width: 40px;	
 	display: inline-block;
 	border: 1px dashed #9bc2cf;
-	padding: 2px;
-	background-color:blue;
-	height: 40px;
-	width: 40px;
 	background-image: url("water.jpg");
 }
 
-
-.hit {
-	background-color: red;
-	background-image: url("");
-}
-
 #dryDock {
-width: 1px;
-}
-.ship {
- width: 100%;
- height: 100%;
-}
-
-.rotated {
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    transform: rotate(90deg);	
+	width: 40px;
+	height: 40px;
 }
 
 .placeGrid {
 	z-index: -1;
 }
 
-.playGrid, .playGrid.col {
+.playGrid .col {
 	z-index: 2;
-	background: #000000;
 	position: relative;
-	opacity: 0.5;
+	opacity: 0.4;
+	color: #8aacb8;
 }
 
-img {
-	z-index: 1;
-	position: relative;
+.hit {
+	background-color: red;
+	opacity: 1;
+	background-image: url("");
+}
+
+.rotate90 {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);	
+}
+.rotate180 {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);	
+}
+
+.modal
+{
+    overflow: hidden;
+}
+.modal-dialog{
+    margin-right: 0;
+    margin-left: 0;
 }
