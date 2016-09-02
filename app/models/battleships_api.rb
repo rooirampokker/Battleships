@@ -13,6 +13,19 @@ class BattleshipsAPI
 							'Content-Type' => 'application/json' 
 							}
 					}
-		@sessionDetails = self.post('/register', @options)		
+		@responseDetails = self.post('/register', @options)		
 	end 
+
+	def self.nuke(gameID, xCoord,yCoord) 
+					@options = {:body => {
+							:id => gameID, 
+							:x => xCoord,
+							:y => yCoord
+							}.to_json,
+					:headers => { 
+							'Content-Type' => 'application/json' 
+							}
+					}			
+		@responseDetails = self.post('/nuke', @options)		
+	end
 end

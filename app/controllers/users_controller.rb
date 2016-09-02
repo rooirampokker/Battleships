@@ -12,13 +12,13 @@ class UsersController < ApplicationController
 	   	@userName = params[:userName]
 	   	@emailAddress = params[:emailAddress]
       begin
-      	@sessionDetails = BattleshipsAPI.register(@userName, @emailAddress)
+      	@responseDetails = BattleshipsAPI.register(@userName, @emailAddress)
         if @sessionDetailsID.is_a?(Object)
-          session[:gameID] = @sessionDetails["id"]
-          session[:incomingX] = @sessionDetails["x"];
-          session[:incomingY] = @sessionDetails["y"];
-          @incomingX = @sessionDetails["x"];
-          @incomingY = @sessionDetails["y"];
+          session[:gameID] = @responseDetails["id"]
+          session[:incomingX] = @responseDetails["x"];
+          session[:incomingY] = @responseDetails["y"];
+          @incomingX = @responseDetails["x"];
+          @incomingY = @responseDetails["y"];
           redirect_to '/play', incomingX: @incomingX, incomingY: @incomingY 
         end        
         rescue SocketError => errorMsg

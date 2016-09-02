@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get '/logout' => 'users#logout'
   post '/register' => 'users#register'   
   get '/play' => 'battleships#index'
+  get '/nuke' => 'battleships#nuke'
 
 
   
