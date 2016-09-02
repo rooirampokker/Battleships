@@ -1,0 +1,77 @@
+/*
+*
+* rotates the ship 90degrees
+*
+*/
+	function rotateShip(that, event, degrees)	 {
+		event.stopPropagation();
+		var shipName = $(that).find("img").attr('id');
+		//var orientation = getShipOrientation(shipName, degrees);
+		
+		if (degrees === 90) {
+			$(that).removeClass('rotate180');
+			$(that).toggleClass('rotate90');
+		} else {
+			$(that).removeClass('rotate90');
+			$(that).toggleClass('rotate180');
+		}
+
+	}
+/*
+*
+* will be used later to programatically register a hit....
+*/
+function checkDropLocation (event, ui, that)	{
+	event.stopPropagation();
+	var coordinates = that.id.split("_");
+	var rowNum = coordinates[1];
+	var colNum = coordinates[2];
+	if (rowNum > 8 ) {
+		var shipName = ui.draggable.find("img").attr("class");
+	}	
+}
+/*
+*
+* THE SHIPYARD
+*
+*/	
+
+/*
+*
+*	launches a ship into the dryDock
+*
+*/
+	function loadShipYard(gameID) {
+	sessionStorage.setItem("GameID", gameID);
+	var shipList = ['carrier_5x1', 'battleship_4x1', 'destroyer_3x1', 'submarine_2x1', 'submarine_2x1', 'patrolboat_1x1', 'patrolboat_1x1'];
+	$.each(shipList, function (shipNum, shipName) {
+		var newShip = $("<div>").addClass("ship");
+		
+		$(newShip).append("<img id= 'ship_"+shipNum+"' class='"+shipName+"' src='/assets/"+shipName+".png'>").draggable({
+			containment: '#playerTable .placeGrid',
+			snap: '.col',
+			snapMode: 'outter',
+			stop: function (event) {
+				//this is where we'll get coordinates
+			}
+		}).bind('dblclick', function (event) {rotateShip(this, event, 90)});
+
+		newShip.appendTo("#dryDock");		
+	});
+	}	
+
+/*
+	function getShipOrientation(shipName, degrees) {
+		var orientation = sessionStorage.getItem(shipName);
+		if (!orientation) { 
+			 orientation = "horizontal";
+		}	
+		if (degrees === 90) {
+			if (orientation === "horizontal") {
+				orientation = "vertical";
+			} else orientation = "horizontal";		
+			sessionStorage.setItem(shipName, orientation);
+		} 		
+		return orientation;
+	}
+	*/

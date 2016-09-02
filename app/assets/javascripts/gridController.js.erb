@@ -1,0 +1,35 @@
+/*
+*
+* TABLE/GRID FACTORY
+*
+*/
+function generateTable(tableID, incomingX, incomingY, gridType) {
+	var table = $("<div>").addClass('gridContainer table '+gridType);
+	for (var rowNum=0; rowNum<10; rowNum++) {
+		var tableRow = $("<div>").addClass('row');
+		generateCol(tableID, tableRow, rowNum, incomingX, incomingY, gridType) 
+		table.append(tableRow);
+	}
+	table.append($("<div>").addClass('row'));
+	$("#"+tableID).html(table);
+}
+/*
+*
+*/
+function generateCol(tableID, tableRow, rowNum, incomingX, incomingY, gridType) {
+	for (var colNum=0; colNum<10; colNum++) {
+		var hitClass = "";
+		if (rowNum === incomingX && colNum === incomingY) {	
+			hitClass = "hit";
+		}
+		var tableCol = $("<div>").addClass('col placeGridCol '+hitClass).text(rowNum+","+colNum).attr('id', tableID+"_"+rowNum+"_"+colNum);
+		//only attach clickhandler to enemy grid & only after the game has started
+		if (tableID === "enemyTable" && gridType === "playGrid") {
+			$(tableCol).bind('click', function (event) {nuke(event,this)});
+		//only log ships dropped on the player grid
+		} else {
+			$(tableCol).droppable({drop: function (event, ui) {checkDropLocation (event, ui, this)}});
+		}
+		tableRow.append(tableCol);	
+	}
+}

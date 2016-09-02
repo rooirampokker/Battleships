@@ -1,0 +1,68 @@
+/*
+*
+* fires the guns & sends coordinates off to the server & deals the with return
+*
+*/
+	function nuke (event,that) {
+		event.stopPropagation();
+		var coordinates = that.id.split("_");
+		//we could've also just picked up the session from the server...
+		var sessionID = sessionStorage.getItem("GameID");
+		//get domain name
+		var submitURL = window.location.href;
+		var submitURL = submitURL.substring(0, submitURL.indexOf("/", 8));
+        jqXHR = $.ajax({
+            url: submitURL+"/nuke",
+            data: {'id': sessionID,
+            	   'x': coordinates[1],
+            	   'y': coordinates[2]},
+            dataType: 'json',
+            beforeSend: function () {
+
+            },
+            success: function(data) {
+//turn these messages into into a modals!
+                if (data.error) {
+                    alert(error);
+                } else {
+                    if (data.sunk) {
+                        alert("You've just sunk an enemy "+data.sunk+"!");
+                    } 
+                    if (data.prize) {
+                        alert("Victory! Go claim your prize at: "+data.prize);
+                    } 
+                    if (data.game_status) {
+                        alert("Game Status has changed to "+data.game_status);
+                    }
+                        applyColStatus(data, that);
+                        applyCounterStrike(data);                                        
+                } 
+            },
+            error: function (error) {
+            	alert(JSON.stringify(error));
+            },
+            complete: function () {
+
+            }
+        });
+	
+	}
+/*
+*
+*
+*/
+ function applyColStatus(data, that) {
+ 		if (data.status === "hit") {
+            $(that).css('background', '#33A1C9');
+            $(that).css('background-image', 'url(/assets/explosion.png)');
+ 		} 
+		$(that).css({opacity: 1});	
+}
+/*
+*
+*
+*/
+function applyCounterStrike (data, that) {
+	  $("#playerTable_"+data.x+"_"+data.y).addClass('hit');
+      $("#playerTable_"+data.x+"_"+data.y).css({opacity: 1});
+}
