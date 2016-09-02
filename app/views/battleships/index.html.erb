@@ -1,32 +1,30 @@
-<%= javascript_include_tag "grid" %>
+<%= javascript_include_tag "gridController" %>
+<%= javascript_include_tag "shipController" %>
+<%= javascript_include_tag "nukeController" %>
 
 <p id="notice"><%= notice %></p>
 <section id="playGrids">
 	<div id="enemyTable" class="float"></div>
 	<div id="playerTable" class="float"></div>
+	<div id="dryDock"><div class="ship"></div>
+	
 </section>
-
-<div id="dryDock"><div class="ship"></div></div>
-
-<div class="form-group">
-    <div class="col-md-6 col-md-offset-4">
-        <button type="button" class="btn btn-primary " id="startButton">
-            <i class="glyphicon glyphicon-log-in"></i> Start
-        </button>
-    </div>
-</div>
-
+  <%= render "instructions_modal" %>
 
 <script type="text/javascript">
 $(function ()  {
-	generateTable('#enemyTable', -1, -1, 'placeGrid');
-	generateTable('#playerTable', 'placeGrid');
+	generateTable('enemyTable', -1, -1, 'placeGrid');
+	generateTable('playerTable', -1, -1, 'placeGrid');
 	$("#startButton").bind('click', function(event) {
 		event.stopPropagation(); 
-		generateTable('#playerTable', <%= "#{session[:incomingX]}, #{session[:incomingY]}" %>, 'playGrid');
+		generateTable('playerTable', <%= "#{session[:incomingX]}, #{session[:incomingY]}" %>, 'playGrid');
+		generateTable('enemyTable', -1, -1, 'playGrid');
 	});
-	//launches the first ship
-	buildShip();
+	//loads all ships
+	loadShipYard(<%= "#{session[:gameID]}" %>);
+  $("#instructionsModal").draggable({
+      handle: ".modal-header"
+  }).modal('show');	
 });
 </script>
 
