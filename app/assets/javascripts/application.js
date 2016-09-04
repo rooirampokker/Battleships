@@ -15,4 +15,6 @@
 //= require jquery-ui
 //= require twitter/bootstrap
 //= require turbolinks
+//= require spin
+//= require jquery.spin
 //= require_tree .
