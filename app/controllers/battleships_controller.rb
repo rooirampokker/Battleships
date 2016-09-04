@@ -5,9 +5,6 @@ class BattleshipsController < ApplicationController
     @grid = "draw grid here"
   end
 
-  def drawGrid
-  end
-
   def nuke
   	@gameID = params[:id]
   	@xCoord = params[:x]
@@ -16,7 +13,7 @@ class BattleshipsController < ApplicationController
       	@responseDetails = BattleshipsAPI.nuke(@gameID, @xCoord,@yCoord)
         rescue SocketError => errorMsg
           flash[:error] = "Error communicating with #{BattleshipsAPI.base_uri}. Please check your connection and try again"
-          redirect_to root_url        
+          #redirect_to root_url        
       end  	
   	respond_to do |format|
   		format.html

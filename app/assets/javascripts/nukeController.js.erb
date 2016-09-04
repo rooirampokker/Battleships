@@ -18,10 +18,17 @@
             	   'y': coordinates[2]},
             dataType: 'json',
             beforeSend: function () {
-
+                $("#enemyTable").spin({
+                      length: 30,
+                      radius: 40,
+                      left: '46%',
+                      position: 'relative'
+                });
+               
             },
             success: function(data) {
 //turn these messages into into a modals!
+                if (data !== null)
                 if (data.error) {
                     alert(error);
                 } else {
@@ -39,10 +46,10 @@
                 } 
             },
             error: function (error) {
-            	alert(JSON.stringify(error));
+            	alert(error.responseText);
             },
             complete: function () {
-
+                $("#enemyTable").spin(false);
             }
         });
 	
