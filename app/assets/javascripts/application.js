@@ -11,10 +11,10 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery_ujs
-//= require jquery-ui
+//= require jquery-ui/draggable
+//= require jquery-ui/droppable
 //= require twitter/bootstrap
 //= require turbolinks
 //= require spin
 //= require jquery.spin
-//= require_tree .
+
