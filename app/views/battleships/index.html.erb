@@ -1,6 +1,8 @@
-<%= javascript_include_tag "gridController" %>
+
 <%= javascript_include_tag "shipController" %>
 <%= javascript_include_tag "nukeController" %>
+<%= javascript_include_tag "gridController" %>
+<%= javascript_include_tag "jquery.simulate" %>
 
 <p id="notice"><%= notice %></p>
 <section id="playGrids">
@@ -23,34 +25,16 @@
 </section>
 
 <!-- START BUTTON -->
-<div class="form-group">
+<div class="form-group" id="startButtons" data-sessionID="<%= session[:gameID] %>" data-x="<%= session[:incomingX] %>" data-y="<%= session[:incomingY] %>">
 		<div class="col-md-6 col-md-offset-4">
 		<button type="button" class="btn btn-primary " id="startButton">
-			<i class="glyphicon glyphicon-log-in"></i> Start
+			<i class="glyphicon glyphicon-user"></i> Start
 		</button>
+		<button type="button" class="btn btn-primary " id="autoStartButton">
+			<i class="glyphicon glyphicon-cog"></i> Auto Play
+		</button>		
 	</div>
 </div>
   <%= render "instructions_modal" %>
-
-<script type="text/javascript">
-$(function ()  {
-	generateTable('enemyTable', -1, -1, 'placeGrid');
-	generateTable('playerTable', -1, -1, 'placeGrid');
-//draws the event-capturing, ship-locking grid and disables the start button - I also need to check if all ships were placed
-	$("#startButton").bind('click', function(event) {
-		event.stopPropagation(); 
-		generateTable('playerTable', <%= "#{session[:incomingX]}, #{session[:incomingY]}" %>, 'playGrid');
-		generateTable('enemyTable', -1, -1, 'playGrid');
-		$(this).attr('disabled', true);
-	});
-	//loads all ships
-	loadShipYard(<%= "#{session[:gameID]}" %>);
-
-	//load instructino modal
-	$("#instructionsModal").draggable({
-	    handle: ".modal-header"
-	}).modal("show");
-});
-</script>
 
 
