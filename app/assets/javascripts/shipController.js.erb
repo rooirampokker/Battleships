@@ -1,3 +1,100 @@
+	var ships = {
+				"carrier_5x1": {
+					"size": 5,
+					"name": "Carrier",
+					"fileName": "carrier_5x1" 
+				},
+				"battleship_4x1": {
+					"size": 4,
+					"name": "Battleship",
+					"fileName": "battleship_4x1" 
+				},
+				"destroyer_3x1": {
+					"size": 3,
+					"name": "Destroyer",
+					"fileName": "destroyer_3x1" 
+				},
+				"submarine1_2x1": {
+					"size": 2,
+					"name": "Submarine 1",
+					"fileName": "submarine_2x1" 
+				},							
+				"submarine2_2x1": {
+					"size": 2,
+					"name": "Submarine 2",
+					"fileName": "submarine_2x1" 
+				},
+				"patrolboat1_1x1": {
+					"size": 1,
+					"name": "Patrol Boat 1",
+					"fileName": "patrolboat_1x1" 
+				},				
+				"patrolboat2_1x1": {
+					"size": 1,
+					"name": "Patrol Boat 2",
+					"fileName": "patrolboat_1x1" 
+				}			
+
+			}
+
+function autoPlaceShips(event) {
+	//creates a 10x10 multidimensional array, setting each column to false
+	var oceanMap = new Array(10).fill(new Array(10).fill(false));
+		  
+	$.each(ships, function(key,shipAttr) {
+			var shipElement = $( "#drag_"+key);
+			var illegalPlacement = true;
+			//try to place until we have a good fit
+			//while (illegalPlacement) {
+				//will ship be place horizontally or vertically...?
+				var isVertical = setOrientation();
+				var startRow = startSeed(shipAttr.size, 10);
+				var startCol = startSeed(shipAttr.size, 10);
+
+				if (isVertical) {
+					rotateShip(shipElement, event, 90)
+					endRow = startRow+shipAttr.size-1;
+					endCol = startCol;
+					//alert("Place "+shipAttr.name+" vertically from "+startRow+","+startCol+" - "+endRow+","+endCol);
+				} else {
+					endRow = startRow;
+					endCol = startCol+shipAttr.size-1;
+					//alert("Place "+shipAttr.name+" horizontally from "+startRow+","+startCol+" - "+endRow+","+endCol);
+				}
+
+				//this section uses jquery.simulate to 'drag and drop' the ships to the grid, based on the supplied coordinates
+				ship = shipElement.draggable();
+				oceanGrid = $( "#playerTable_"+startRow+"_"+startCol).droppable();
+
+				oceanOffset = oceanGrid.offset();
+				shipOffset = shipElement.offset();
+				dx = oceanOffset.left - shipOffset.left;
+				dy = oceanOffset.top - shipOffset.top;
+
+				ship.simulate( "drag", {
+				    dx: dx,
+				    dy: dy
+				});					
+	  	//}
+	}); 
+}
+/*
+* bool return wil be evaluated as horisontal or vertical
+*/
+function setOrientation() {
+	if (Math.random() >= 0.5) {
+		return true;
+	} 
+	return false;
+}
+/*
+* selects random coordinate - offset is created to ensure none of the ship overruns if it's placed near the edge of the grid
+*/
+function startSeed(shipSize, gridSize) {
+	var seedOffset = gridSize - shipSize;
+	return Math.floor(Math.random() * seedOffset);
+
+}
 /*
 *
 * rotates the ship 90degrees
@@ -19,19 +116,6 @@
 	}
 /*
 *
-* will be used later to programatically register a hit....
-*/
-function checkDropLocation (event, ui, that)	{
-	event.stopPropagation();
-	var coordinates = that.id.split("_");
-	var rowNum = coordinates[1];
-	var colNum = coordinates[2];
-	if (rowNum > 8 ) {
-		var shipName = ui.draggable.find("img").attr("class");
-	}	
-}
-/*
-*
 * THE SHIPYARD
 *
 */	
@@ -41,13 +125,12 @@ function checkDropLocation (event, ui, that)	{
 *	launches a ship into the dryDock
 *
 */
-	function loadShipYard(gameID) {
-	sessionStorage.setItem("GameID", gameID);
-	var shipList = ['carrier_5x1', 'battleship_4x1', 'destroyer_3x1', 'submarine_2x1', 'submarine_2x1', 'patrolboat_1x1', 'patrolboat_1x1'];
-	$.each(shipList, function (shipNum, shipName) {
-		var newShip = $("<div>").addClass("ship");
+	function loadShipYard() {
+	//var shipList = ['carrier_5x1', 'battleship_4x1', 'destroyer_3x1', 'submarine_2x1', 'submarine_2x1', 'patrolboat_1x1', 'patrolboat_1x1'];
+	$.each(ships, function (shipID, shipAttr) {
+		var newShip = $("<div>").addClass("ship").attr('id', 'drag_'+shipID);
 		
-		$(newShip).append("<img id= 'ship_"+shipNum+"' class='"+shipName+"' src='/assets/"+shipName+".png'>").draggable({
+		$(newShip).append("<img id= 'ship_"+shipID+"' class='"+shipID+"' src='/assets/"+shipAttr.fileName+".png'>").draggable({
 			containment: '#playerTable .placeGrid',
 			snap: '.col',
 			snapMode: 'outter',
@@ -60,6 +143,9 @@ function checkDropLocation (event, ui, that)	{
 	});
 	}	
 
+
+
+//FUNCTIONS BELOW ARE EITHER INACTIVE OR NEED MORE WORK TO BRING FULLY ON LINE
 /*
 	function getShipOrientation(shipName, degrees) {
 		var orientation = sessionStorage.getItem(shipName);
@@ -74,4 +160,18 @@ function checkDropLocation (event, ui, that)	{
 		} 		
 		return orientation;
 	}
-	*/
+	
+/*
+*
+* will be used later to programatically register a hit....
+* CURRENTLY NOT IN USE
+*/
+function checkDropLocation (event, ui, that)	{
+	event.stopPropagation();
+	var coordinates = that.id.split("_");
+	var rowNum = coordinates[1];
+	var colNum = coordinates[2];
+	if (rowNum > 8 ) {
+		var shipName = ui.draggable.find("img").attr("class");
+	}	
+}*/

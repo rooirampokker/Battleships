@@ -8,9 +8,11 @@
 		var coordinates = that.id.split("_");
 		//we could've also just picked up the session from the server...
 		var sessionID = sessionStorage.getItem("GameID");
+
 		//get domain name
 		var submitURL = window.location.href;
 		var submitURL = submitURL.substring(0, submitURL.indexOf("/", 8));
+        
         jqXHR = $.ajax({
             url: submitURL+"/nuke",
             data: {'id': sessionID,
@@ -18,6 +20,7 @@
             	   'y': coordinates[2]},
             dataType: 'json',
             beforeSend: function () {
+
                 $("#enemyTable").spin({
                       length: 30,
                       radius: 40,
@@ -41,8 +44,8 @@
                     if (data.game_status) {
                         alert("Game Status has changed to "+data.game_status);
                     }
-                        applyColStatus(data, that);
-                        applyCounterStrike(data);                                        
+                    applyColStatus(data, that);
+                    applyCounterStrike(data);                                        
                 } 
             },
             error: function (error) {
