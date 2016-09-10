@@ -14,7 +14,7 @@
 //= require jquery-ui/draggable
 //= require jquery-ui/droppable
 //= require twitter/bootstrap
+//= require underscore
 //= require turbolinks
 //= require spin
 //= require jquery.spin
-
