@@ -8,7 +8,7 @@
 					"size": 4,
 					"name": "Battleship",
 					"fileName": "battleship_4x1" 
-				},
+				},					
 				"destroyer_3x1": {
 					"size": 3,
 					"name": "Destroyer",
@@ -18,7 +18,7 @@
 					"size": 2,
 					"name": "Submarine 1",
 					"fileName": "submarine_2x1" 
-				},							
+				},					
 				"submarine2_2x1": {
 					"size": 2,
 					"name": "Submarine 2",
@@ -28,39 +28,41 @@
 					"size": 1,
 					"name": "Patrol Boat 1",
 					"fileName": "patrolboat_1x1" 
-				},				
+				},			
 				"patrolboat2_1x1": {
 					"size": 1,
 					"name": "Patrol Boat 2",
 					"fileName": "patrolboat_1x1" 
-				}			
-
+				}
 			}
 
 function autoPlaceShips(event) {
-	//creates a 10x10 multidimensional array, setting each column to false
-	var oceanMap = new Array(10).fill(new Array(10).fill(false));
-		  
+	var oceanMap = [];
+
+	console.log("--------------- start new game ---------------");
 	$.each(ships, function(key,shipAttr) {
 			var shipElement = $( "#drag_"+key);
-			var illegalPlacement = true;
+			doTurn(shipElement, event, key);
 			//try to place until we have a good fit
-			//while (illegalPlacement) {
-				//will ship be place horizontally or vertically...?
-				var isVertical = setOrientation();
+			var counter = 0;
+			while (counter < 100) {
+				var shipPos = [];
+
 				var startRow = startSeed(shipAttr.size, 10);
 				var startCol = startSeed(shipAttr.size, 10);
-
-				if (isVertical) {
-					rotateShip(shipElement, event, 90)
+				if (sessionStorage.getItem(key) === "vertical") {
 					endRow = startRow+shipAttr.size-1;
 					endCol = startCol;
-					//alert("Place "+shipAttr.name+" vertically from "+startRow+","+startCol+" - "+endRow+","+endCol);
-				} else {
+					for (var x=0; x<shipAttr.size; x++) {
+						shipPos.push(parseFloat(startRow+x)+"_"+parseFloat(startCol));
+					}					
+				} else { //ship is horizontal
 					endRow = startRow;
 					endCol = startCol+shipAttr.size-1;
-					//alert("Place "+shipAttr.name+" horizontally from "+startRow+","+startCol+" - "+endRow+","+endCol);
-				}
+					for (var x=0; x<shipAttr.size; x++) {
+					 	shipPos.push(parseFloat(startRow)+"_"+parseFloat(startCol+x));
+					}								
+				}				
 
 				//this section uses jquery.simulate to 'drag and drop' the ships to the grid, based on the supplied coordinates
 				ship = shipElement.draggable();
@@ -70,41 +72,53 @@ function autoPlaceShips(event) {
 				shipOffset = shipElement.offset();
 				dx = oceanOffset.left - shipOffset.left;
 				dy = oceanOffset.top - shipOffset.top;
-
 				ship.simulate( "drag", {
 				    dx: dx,
 				    dy: dy
-				});					
-	  	//}
+				});	
+
+				//does this intersect with any other ship?
+				var intersect = _.intersection(oceanMap, shipPos);
+				if (intersect.length === 0) {
+					_.each(shipPos, function(value){
+						oceanMap.push(value);
+					});
+					console.log(shipAttr.name+" placed at at "+shipPos);
+					break;
+				} else {
+					console.log(shipAttr.name+" collision at "+intersect);
+
+				}	
+				counter++;
+	  	}
 	}); 
+	
 }
 /*
 * bool return wil be evaluated as horisontal or vertical
+* all ships always start off as horizontal
 */
-function setOrientation() {
+function doTurn(shipElement, event, shipName) {
+	var orientation = "";
 	if (Math.random() >= 0.5) {
-		return true;
-	} 
-	return false;
+		orientation = rotateShip(shipElement, event, 90, shipName);
+		console.log(shipName+" was turned "+orientation);
+	} else console.log(shipName+" was left "+sessionStorage.getItem(shipName));
 }
 /*
 * selects random coordinate - offset is created to ensure none of the ship overruns if it's placed near the edge of the grid
 */
 function startSeed(shipSize, gridSize) {
 	var seedOffset = gridSize - shipSize;
-	return Math.floor(Math.random() * seedOffset);
+	var returnSeed = Math.ceil(Math.random() * seedOffset);
+	return returnSeed;
 
 }
 /*
-*
 * rotates the ship 90degrees
-*
 */
-	function rotateShip(that, event, degrees)	 {
+	function rotateShip(that, event, degrees, shipName)	 {
 		event.stopPropagation();
-		var shipName = $(that).find("img").attr('id');
-		//var orientation = getShipOrientation(shipName, degrees);
-		
 		if (degrees === 90) {
 			$(that).removeClass('rotate180');
 			$(that).toggleClass('rotate90');
@@ -112,21 +126,30 @@ function startSeed(shipSize, gridSize) {
 			$(that).removeClass('rotate90');
 			$(that).toggleClass('rotate180');
 		}
+		return getShipOrientation(shipName, degrees);
 
 	}
 /*
 *
-* THE SHIPYARD
-*
-*/	
+*/
+	function getShipOrientation(shipName, degrees) {
+		var orientation = sessionStorage.getItem(shipName);
+		if (!orientation) { 
+			 orientation = "horizontal";
+		}	
+		if (degrees === 90) {
+			if (orientation === "horizontal") {
+				orientation = "vertical";
+			} else orientation = "horizontal";		
+		} 		
+		sessionStorage.setItem(shipName, orientation);
+		return orientation;
+	}	
 
 /*
-*
 *	launches a ship into the dryDock
-*
 */
 	function loadShipYard() {
-	//var shipList = ['carrier_5x1', 'battleship_4x1', 'destroyer_3x1', 'submarine_2x1', 'submarine_2x1', 'patrolboat_1x1', 'patrolboat_1x1'];
 	$.each(ships, function (shipID, shipAttr) {
 		var newShip = $("<div>").addClass("ship").attr('id', 'drag_'+shipID);
 		
@@ -142,27 +165,7 @@ function startSeed(shipSize, gridSize) {
 		newShip.appendTo("#dryDock");		
 	});
 	}	
-
-
-
-//FUNCTIONS BELOW ARE EITHER INACTIVE OR NEED MORE WORK TO BRING FULLY ON LINE
 /*
-	function getShipOrientation(shipName, degrees) {
-		var orientation = sessionStorage.getItem(shipName);
-		if (!orientation) { 
-			 orientation = "horizontal";
-		}	
-		if (degrees === 90) {
-			if (orientation === "horizontal") {
-				orientation = "vertical";
-			} else orientation = "horizontal";		
-			sessionStorage.setItem(shipName, orientation);
-		} 		
-		return orientation;
-	}
-	
-/*
-*
 * will be used later to programatically register a hit....
 * CURRENTLY NOT IN USE
 */

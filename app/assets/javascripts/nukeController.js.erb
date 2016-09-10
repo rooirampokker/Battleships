@@ -1,7 +1,5 @@
 /*
-*
 * fires the guns & sends coordinates off to the server & deals the with return
-*
 */
 	function nuke (event,that) {
 		event.stopPropagation();
@@ -30,7 +28,7 @@
                
             },
             success: function(data) {
-//turn these messages into into a modals!
+        //turn these messages into into a modals!
                 if (data !== null)
                 if (data.error) {
                     alert(error);
@@ -44,7 +42,7 @@
                     if (data.game_status) {
                         alert("Game Status has changed to "+data.game_status);
                     }
-                    applyColStatus(data, that);
+                    registerHit(data, that);
                     applyCounterStrike(data);                                        
                 } 
             },
@@ -59,9 +57,8 @@
 	}
 /*
 *
-*
 */
- function applyColStatus(data, that) {
+ function registerHit(data, that) {
  		if (data.status === "hit") {
             $(that).css('background', '#33A1C9');
             $(that).css('background-image', 'url(/assets/explosion.png)');
@@ -69,7 +66,6 @@
 		$(that).css({opacity: 1});	
 }
 /*
-*
 *
 */
 function applyCounterStrike (data, that) {
