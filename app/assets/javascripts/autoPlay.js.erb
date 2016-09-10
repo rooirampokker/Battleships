@@ -1,0 +1,58 @@
+$(function ()  {
+	$("#autoStartButton").bind('click', function(event) {
+		console.log('Initialising ship positions...')
+			$.each(ships, function(key,shipAttr) {
+				sessionStorage.setItem(key, "horizontal");
+			});	
+			//start game once the ships are in position	
+		if(autoPlaceShips(event)) {
+			$("#startButton").trigger('click');
+			var oceanGrid = new Array(10).fill(Array(10).fill(false));
+			sessionStorage.setItem("oceanGrid", JSON.stringify(oceanGrid));
+
+		//gameloop starts here
+			var gameLoop = setInterval(function() {
+				var nukeCoords = selectNukeCoords(gameLoop);
+				console.log('nuking '+nukeCoords);
+				$(nukeCoords).trigger('click', [event, this, true, gameLoop]);
+			}, 3000);
+		}
+	});
+});	
+/*
+*
+*/
+function selectNukeCoords(gameLoop)  {
+	oceanGrid = JSON.parse(sessionStorage.getItem("oceanGrid"));
+	counter = 0;
+	while (true) {
+		counter++;
+		var nukeCol = Math.floor(Math.random() * 10);
+		var nukeRow = Math.floor(Math.random() * 10);
+		
+		if (!oceanGrid[nukeRow][nukeCol]) {
+			oceanGrid[nukeRow][nukeCol] = true;
+			sessionStorage.setItem("oceanGrid", JSON.stringify(oceanGrid));
+			coords = "#enemyTable_"+nukeRow+"_"+nukeCol;
+			break;
+		}	
+		//are we still throwing random numbers after 20 tries? Just go through the array and find the first 
+		if (counter >= 20) {
+			console.log("stop bruteforcing - scan array and return first available coords....");
+			for (var x=0; x<oceanGrid.length; x++) {
+				for (var y=0; y<oceanGrid[x].length; y++) {
+					if (!oceanGrid[x][y]) {
+						oceanGrid[x][y] = true;
+						sessionStorage.setItem("oceanGrid", JSON.stringify(oceanGrid));
+						return "#enemyTable_"+x+"_"+y;
+					}
+				}
+			}
+			clearInterval(gameLoop);
+			console.log("Game Over");
+			return false;
+		}
+	}
+	console.log("valid coordinate found after "+counter+" tries");
+	return coords;
+}

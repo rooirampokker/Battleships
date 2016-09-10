@@ -2,6 +2,8 @@
 <%= javascript_include_tag "shipController" %>
 <%= javascript_include_tag "nukeController" %>
 <%= javascript_include_tag "gridController" %>
+<%= javascript_include_tag "autoPlay" %>
+<%= javascript_include_tag "main" %>
 <%= javascript_include_tag "jquery.simulate" %>
 
 <p id="notice"><%= notice %></p>
@@ -21,19 +23,19 @@
         </div>
     </div>    
 <!-- DRYDOCK/SHIPYARD -->            
-	<div id="dryDock"><div class="ship"></div>
+  <div id="dryDock"><div class="ship"></div>
 </section>
 
 <!-- START BUTTON -->
 <div class="form-group" id="startButtons" data-sessionID="<%= session[:gameID] %>" data-x="<%= session[:incomingX] %>" data-y="<%= session[:incomingY] %>">
-		<div class="col-md-6 col-md-offset-4">
-		<button type="button" class="btn btn-primary " id="startButton">
-			<i class="glyphicon glyphicon-user"></i> Start
-		</button>
-		<button type="button" class="btn btn-primary " id="autoStartButton">
-			<i class="glyphicon glyphicon-cog"></i> Auto Play
-		</button>		
-	</div>
+    <div class="col-md-6 col-md-offset-4">
+    <button type="button" class="btn btn-primary " id="startButton">
+      <i class="glyphicon glyphicon-user"></i> Start
+    </button>
+    <button type="button" class="btn btn-primary " id="autoStartButton">
+      <i class="glyphicon glyphicon-cog"></i> Auto Play
+    </button>   
+  </div>
 </div>
   <%= render "instructions_modal" %>
 

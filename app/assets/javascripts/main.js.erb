@@ -1,0 +1,25 @@
+/*
+* DRIVER/INITIALISER
+*/
+$(function ()  {
+	//load instruction modal
+	$("#instructionsModal").draggable({
+	    handle: ".modal-header"
+	}).modal("show");
+
+	sessionStorage.setItem("GameID", $("#startButtons").data('sessionid'));
+	generateTable('enemyTable', 'placeGrid');
+	generateTable('playerTable', 'placeGrid');
+//draws the event-capturing, ship-locking grid and disables the start button - I also need to check if all ships were placed
+	$("#startButton").bind('click', function(event) {
+		event.stopPropagation(); 
+		generateTable('playerTable', 'playGrid');
+		generateTable('enemyTable', 'playGrid');
+		$(this).attr('disabled', true);
+		$("#autoStartButton").attr('disabled', true);
+
+	});
+	//loads all ships
+	loadShipYard();
+});
+

@@ -34,34 +34,3 @@ function generateCol(tableID, tableRow, rowNum, incomingX, incomingY, gridType) 
 		tableRow.append(tableCol);	
 	}
 }
-/*
-* DRIVER/INITIALISER
-*/
-$(function ()  {
-	sessionStorage.setItem("GameID", $("#startButtons").data('sessionid'));
-	console.log('Initialising ship positions...')
- 	$.each(ships, function(key,shipAttr) {
- 		sessionStorage.setItem(key, "horizontal");
- 	});
-	generateTable('enemyTable', 'placeGrid');
-	generateTable('playerTable', 'placeGrid');
-//draws the event-capturing, ship-locking grid and disables the start button - I also need to check if all ships were placed
-	$("#startButton").bind('click', function(event) {
-		event.stopPropagation(); 
-		generateTable('playerTable', 'playGrid');
-		generateTable('enemyTable', 'playGrid');
-		$(this).attr('disabled', true);
-	});
-	$("#autoStartButton").bind('click', function(event) {
-		autoPlaceShips(event);
-
-	});	
-	
-	//loads all ships
-	loadShipYard();
-
-	//load instruction modal
-	$("#instructionsModal").draggable({
-	    handle: ".modal-header"
-	}).modal("show");
-});
