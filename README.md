@@ -1,4 +1,4 @@
-TangentSolutions Assessment Project
+Platform45 - Battlehips!
 =====================================
 ## Project Specification
 
@@ -9,5 +9,9 @@ TangentSolutions Assessment Project
 * Rails 4.2.6
 * Ruby 2.3.0p0
 * CentOS 7
+* HTTParty
+* Spinjs-rails
+* Underscore-rails
+* Twitter Bootstrap
 
 
