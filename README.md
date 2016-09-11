@@ -1,4 +1,4 @@
-Platform45 - Battlehips!
+Platform45 - Battleships!
 =====================================
 ## Project Specification
 
